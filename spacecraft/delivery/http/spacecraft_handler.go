@@ -40,7 +40,7 @@ func (h *SpacecraftHandler) ListSpacecrafts(c echo.Context) error {
 	}
 
 	// Respond with the list of spacecrafts
-	return c.JSON(http.StatusOK, spacecrafts)
+	return c.JSON(http.StatusOK, mapSpacecraftToResponse(spacecrafts))
 }
 
 func (h *SpacecraftHandler) GetSpacecraftByID(c echo.Context) error {
