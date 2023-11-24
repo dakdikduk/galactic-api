@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/dakdikduk/galactic-api/domain"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type MySQLSpacecraftRepository struct {

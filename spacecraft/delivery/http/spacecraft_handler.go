@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/dakdikduk/galactic-ai/domain"
+	"github.com/dakdikduk/galactic-api/domain"
 	"github.com/labstack/echo/v4"
 )
 
@@ -12,10 +12,15 @@ type SpacecraftHandler struct {
 	spacecraftUseCase domain.SpacecraftUseCase
 }
 
-func NewSpacecraftHandler(spacecraftUseCase domain.SpacecraftUseCase) *SpacecraftHandler {
-	return &SpacecraftHandler{
+func NewSpacecraftHandler(e *echo.Echo, spacecraftUseCase domain.SpacecraftUseCase) {
+	handler := &SpacecraftHandler{
 		spacecraftUseCase: spacecraftUseCase,
 	}
+	e.GET("/spacecrafts", handler.ListSpacecrafts)
+	e.POST("/spacecrafts", handler.CreateSpacecraft)
+	e.GET("/spacecrafts/:id", handler.GetSpacecraftByID)
+	e.DELETE("/spacecrafts/:id", handler.DeleteSpacecraft)
+	e.PATCH("/spacecrafts/:id", handler.UpdateSpacecraft)
 }
 
 func (h *SpacecraftHandler) ListSpacecrafts(c echo.Context) error {

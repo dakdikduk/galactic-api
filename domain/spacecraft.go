@@ -3,19 +3,21 @@ package domain
 import (
 	"context"
 	"time"
+
+	"gorm.io/datatypes"
 )
 
 type Spacecraft struct {
-	ID        uint       `gorm:"primary_key"`
-	Name      string     `gorm:"not null"`
-	Class     string     `gorm:"not null"`
-	Armament  []Armament `gorm:"type:JSON;not null"`
-	Crew      int        `gorm:"not null"`
-	Image     string     `gorm:"default:null"`
-	Value     float64    `gorm:"not null"`
-	Status    string     `gorm:"not null"`
-	CreatedAt time.Time  `gorm:"default:current_timestamp"`
-	UpdatedAt time.Time  `gorm:"default:current_timestamp"`
+	ID        uint           `gorm:"primary_key"`
+	Name      string         `gorm:"not null"`
+	Class     string         `gorm:"not null"`
+	Armament  datatypes.JSON `gorm:"type:JSON;not null"`
+	Crew      int            `gorm:"not null"`
+	Image     string         `gorm:"default:null"`
+	Value     float64        `gorm:"not null"`
+	Status    string         `gorm:"not null"`
+	CreatedAt *time.Time
+	UpdatedAt *time.Time
 }
 
 type ListSpacecraftParams struct {
