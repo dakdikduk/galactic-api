@@ -67,18 +67,21 @@ func (h *SpacecraftHandler) CreateSpacecraft(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request payload"})
 	}
 
+	if err := validateSpacecraft(spacecraft); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request payload", "detail": err.Error()})
+	}
 	// Call the use case to create a new spacecraft
 	h.spacecraftUseCase.Create(c.Request().Context(), spacecraft)
 
 	// Respond with a success message
-	return c.JSON(http.StatusCreated, map[string]string{"message": "Spacecraft created successfully"})
+	return c.JSON(http.StatusCreated, SuccessResponse{Success: true})
 }
 
 func (h *SpacecraftHandler) UpdateSpacecraft(c echo.Context) error {
 	// Extract spacecraft ID from the URL path
 	spacecraftID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid spacecraft ID"})
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request payload", "detail": err.Error()})
 	}
 
 	// Parse the request body to get the updated spacecraft data
@@ -87,12 +90,16 @@ func (h *SpacecraftHandler) UpdateSpacecraft(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request payload"})
 	}
 
+	if err := validateSpacecraft(updatedSpacecraft); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request payload", "detail": err.Error()})
+	}
+
 	// Call the use case to update the spacecraft
 	updatedSpacecraft.ID = uint(spacecraftID)
 	h.spacecraftUseCase.Update(c.Request().Context(), updatedSpacecraft)
 
 	// Respond with a success message
-	return c.JSON(http.StatusOK, map[string]string{"message": "Spacecraft updated successfully"})
+	return c.JSON(http.StatusOK, SuccessResponse{Success: true})
 }
 
 func (h *SpacecraftHandler) DeleteSpacecraft(c echo.Context) error {
@@ -106,7 +113,7 @@ func (h *SpacecraftHandler) DeleteSpacecraft(c echo.Context) error {
 	h.spacecraftUseCase.Delete(c.Request().Context(), spacecraftID)
 
 	// Respond with a success message
-	return c.JSON(http.StatusOK, map[string]string{"message": "Spacecraft deleted successfully"})
+	return c.JSON(http.StatusOK, SuccessResponse{Success: true})
 }
 
 // Helper function to parse integer query parameters

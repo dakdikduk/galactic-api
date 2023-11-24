@@ -12,6 +12,10 @@ type ListSpacecraftItem struct {
 	Status string
 }
 
+type SuccessResponse struct {
+	Success bool
+}
+
 func mapSpacecraftToResponse(spacecrafts []domain.Spacecraft) ListSpacecraftsResponse {
 	data := []ListSpacecraftItem{}
 
